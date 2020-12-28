@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api_project_for_flutter", "api_project_for_flutter\api_project_for_flutter.csproj", "{DDE5E25A-71D9-4513-B1F8-9DBBB3C1D6AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDE5E25A-71D9-4513-B1F8-9DBBB3C1D6AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE5E25A-71D9-4513-B1F8-9DBBB3C1D6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE5E25A-71D9-4513-B1F8-9DBBB3C1D6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE5E25A-71D9-4513-B1F8-9DBBB3C1D6AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6209351A-5900-433E-8F6A-E0369A5B9FD7}
+	EndGlobalSection
+EndGlobal
