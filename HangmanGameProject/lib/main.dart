@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'read_examples_from_xml_file.dart';
-//import 'remaining_words_area.dart';
 import 'keyboard_character_model.dart';
 
 void main()=>runApp(MaterialApp(
@@ -34,8 +33,9 @@ class _MainPageState extends State<MainPage> {
   String _question = '';
   String _answer = '';
   String _pressedKey = '';
+  String _status = '';
   String _showAnswer = "Click To See The Answer";
-  var characters = ["a","b","c","ç","d","e","f","g","h","ı","i","j","k","l","m","n","o","ö","p","r","s","ş","t","u","ü","v","y","z"];
+  var charactersTR = ["a","b","c","ç","d","e","f","g","ğ","h","ı","i","j","k","l","m","n","o","ö","p","r","s","ş","t","u","ü","v","y","z"];
   List<String> _guessedCharacters = new List<String>();
 
   addToGuessedCharacters(String char){
@@ -45,8 +45,8 @@ class _MainPageState extends State<MainPage> {
       _mistakeLevel += 1;
     }); */
   }
-  LoadLevel(var context, int level) async {
-    var example = await GetSpecifiedExample(context,level);
+  LoadLevel(var context, int level, String status) async {
+    var example = await GetSpecifiedExample(context,level,"TR");
     setState(() {
       _question = example.question;
       _answer = example.answer;
@@ -54,6 +54,7 @@ class _MainPageState extends State<MainPage> {
       _pressedKey = '';
       _guessedCharacters = [];
       _mistakeLevel = 0;
+      _status = status;
       _showAnswer = "Click To See The Answer";
     });
   }
@@ -63,8 +64,9 @@ class _MainPageState extends State<MainPage> {
         _mistakeLevel += 1;
       });
     }
-    if(_mistakeLevel > 6){
+    if(_mistakeLevel > 5){
       print("failed");
+      LoadLevel(context, _level,"You Filed At Level ${_level}");
     }
     setState(() {
       _pressedKey = key;
@@ -89,59 +91,80 @@ class _MainPageState extends State<MainPage> {
       }
     }
     if(!remainingString.contains("_")){
-      LoadLevel(context,_level+1);
+      LoadLevel(context,_level+1,"");
     }
   }
 
   @override
   Widget build(BuildContext context) {
       if(_level == 0){
-        LoadLevel(context,1);
+        LoadLevel(context,1,"");
       }
       remainingWordsControl(context);
       return  Container(
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('LEVEL : ${_level}'),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4,25,4,10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('LEVEL : ${_level}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                ],
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('QUESTION : ${_question}'),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('MISTAKES : ${_mistakeLevel}'),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(image:AssetImage('assets/mistakes/${_mistakeLevel}.png')),
+                Text('${_status}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,backgroundColor: Colors.redAccent.withOpacity(0.5))),
               ],
             ),
 
-            //RemainingWordsArea(_answer,_guessedCharacters),
-          Container(
-            child: Column(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4,40,4,4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image(image:AssetImage('assets/mistakes/${_mistakeLevel}.png')),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(remainingString),
-                  ],
+                Text('MISTAKES : ${_mistakeLevel}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('${_question}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                    )
                 ),
               ],
             ),
-          ),
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4,20,4,20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                            child: Text(remainingString,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40,backgroundColor: Colors.green.withOpacity(0.5),letterSpacing: 15.0))
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Wrap(
-                children: characters.map((e) =>
+                children: charactersTR.map((e) =>
                     Character(e, PressedKey,addToGuessedCharacters,_guessedCharacters),
                 ).toList()
             ),
@@ -163,14 +186,14 @@ class _MainPageState extends State<MainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-              FlatButton(
-              color: Colors.green,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-                onPressed: (){
-                  LoadLevel(context, _level+1);
-                },
-                child: Text('NEXT LEVEL'),
-              ),
+                FlatButton(
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+                  onPressed: (){
+                    LoadLevel(context, _level+1,"");
+                  },
+                  child: Text('NEXT LEVEL'),
+                ),
               ],
             ),
             Row(
@@ -180,7 +203,7 @@ class _MainPageState extends State<MainPage> {
                   color: Colors.green,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
                   onPressed: (){
-                    LoadLevel(context, _level-1);
+                    LoadLevel(context, _level-1,"");
                   },
                   child: Text('PREVIOS LEVEL'),
                 ),
