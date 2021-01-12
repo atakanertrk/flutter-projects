@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> {
     }
     if(_mistakeLevel > 5){
       print("failed");
-      LoadLevel(context, _level,"You Filed At Level ${_level}");
+      LoadLevel(context, _level,"You Failed At Level ${_level}");
     }
     setState(() {
       _pressedKey = key;
@@ -116,6 +116,28 @@ class _MainPageState extends State<MainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                FlatButton(
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
+                  onPressed: (){
+                    LoadLevel(context, _level-1,"");
+                  },
+                  child: Text('PREVIOUS'),
+                ),
+                FlatButton(
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100.0)),
+                  onPressed: (){
+                    LoadLevel(context, _level+1,"");
+                  },
+                  child: Text('NEXT'),
+                ),
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
                 Text('${_status}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,backgroundColor: Colors.redAccent.withOpacity(0.5))),
               ],
             ),
@@ -133,6 +155,21 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text('MISTAKES : ${_mistakeLevel}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                FlatButton(
+                  color: Colors.orangeAccent,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+                  onPressed: (){
+                    setState(() {
+                      _showAnswer = _answer;
+                    });
+                  },
+                  child: Text(_showAnswer),
+                ),
               ],
             ),
             Row(
@@ -168,47 +205,7 @@ class _MainPageState extends State<MainPage> {
                     Character(e, PressedKey,addToGuessedCharacters,_guessedCharacters),
                 ).toList()
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.orangeAccent,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-                  onPressed: (){
-                    setState(() {
-                      _showAnswer = _answer;
-                    });
-                  },
-                  child: Text(_showAnswer),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.green,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-                  onPressed: (){
-                    LoadLevel(context, _level+1,"");
-                  },
-                  child: Text('NEXT LEVEL'),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.green,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-                  onPressed: (){
-                    LoadLevel(context, _level-1,"");
-                  },
-                  child: Text('PREVIOS LEVEL'),
-                ),
-              ],
-            ),
+
           ],
         ),
       );
