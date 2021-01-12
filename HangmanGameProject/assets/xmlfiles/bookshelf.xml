@@ -1,0 +1,30 @@
+<data>
+ <example1>
+     <question>iki ayaklı ve kanatlı hayvan</question>
+     <answer>kuş</answer>
+ </example1>
+  <example2>
+      <question>güneşten gözleri koruyan aksesuar</question>
+      <answer>güneş gözlüğü</answer>
+  </example2>
+    <example3>
+        <question>Her canlının ihtiyaç duyduğu madde</question>
+        <answer>su</answer>
+    </example3>
+    <example4>
+        <question>Kana rengini veren madde</question>
+        <answer>alyuvar</answer>
+    </example4>
+    <example5>
+        <question>Türkiye'nin başkenti</question>
+        <answer>ankara</answer>
+    </example5>
+    <example6>
+        <question>Bir programlama dili</question>
+        <answer>python</answer>
+    </example6>
+    <example7>
+        <question>Bisiklette oturulan kısmın adı</question>
+        <answer>sele</answer>
+    </example7>
+</data>
