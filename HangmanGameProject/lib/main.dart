@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        appBar: AppBar(title:Text('Hangman Game')),
+        appBar: AppBar(title:Text('Hangman')),
         body:SingleChildScrollView(child: Container(child: MainPage())),
       );
   }
@@ -28,25 +28,51 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 class _MainPageState extends State<MainPage> {
+
+  // Dile bağımlı arayüz yazıları
+  String previous;
+  String next;
+  String mistakes;
+  String failMessage;
+
   int _level = 0; // level 0 means game is not started yet
   int _mistakeLevel = 0;
   String _question = '';
   String _answer = '';
   String _pressedKey = '';
   String _status = '';
-  String _showAnswer = "Click To See The Answer";
+  String _showAnswer = "";
+  String _language = "EN";
   var charactersTR = ["a","b","c","ç","d","e","f","g","ğ","h","ı","i","j","k","l","m","n","o","ö","p","r","s","ş","t","u","ü","v","y","z"];
+  var charactersEN = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+  var characters = [];
   List<String> _guessedCharacters = new List<String>();
+
 
   addToGuessedCharacters(String char){
     _guessedCharacters.add(char);
     print(_guessedCharacters);
-   /* setState(() {
-      _mistakeLevel += 1;
-    }); */
   }
   LoadLevel(var context, int level, String status) async {
-    var example = await GetSpecifiedExample(context,level,"TR");
+    if(_language == "TR"){
+      setState(() {
+        mistakes = "hatalar";
+        next = "sonraki";
+        previous = "önceki";
+        failMessage = "leveli geçemediniz";
+        characters = charactersTR;
+      });
+    }
+    else{
+      setState(() {
+        mistakes = "mistakes";
+        next = "next";
+        previous = "previous";
+        failMessage = "you failed at level";
+        characters = charactersEN;
+      });
+    }
+    var example = await GetSpecifiedExample(context,level,_language);
     setState(() {
       _question = example.question;
       _answer = example.answer;
@@ -55,8 +81,30 @@ class _MainPageState extends State<MainPage> {
       _guessedCharacters = [];
       _mistakeLevel = 0;
       _status = status;
-      _showAnswer = "Click To See The Answer";
     });
+    if(_language == "TR"){
+       setState(() {
+         _showAnswer = "cevabı göster";
+       });
+    }
+    else{
+      setState(() {
+        _showAnswer = "see the answer";
+      });
+    }
+  }
+  ChangeLanguage(String lang){
+    if(lang == "TR"){
+      setState(() {
+        _language = "TR";
+      });
+    }
+    else{
+      setState(() {
+        _language = "EN";
+      });
+    }
+    LoadLevel(context, 1, "");
   }
   PressedKey(String key){
     if(!_answer.contains(key)){
@@ -66,7 +114,7 @@ class _MainPageState extends State<MainPage> {
     }
     if(_mistakeLevel > 5){
       print("failed");
-      LoadLevel(context, _level,"You Failed At Level ${_level}");
+      LoadLevel(context, _level,failMessage+_level.toString());
     }
     setState(() {
       _pressedKey = key;
@@ -104,6 +152,33 @@ class _MainPageState extends State<MainPage> {
       return  Container(
         child: Column(
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    color: Colors.blue.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                    onPressed: (){
+                      ChangeLanguage("TR");
+                    },
+                    child: Text("TR"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    color: Colors.blue.withOpacity(0.3),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+                    onPressed: (){
+                      ChangeLanguage("EN");
+                    },
+                    child: Text("EN"),
+                  ),
+                ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(4,25,4,10),
               child: Row(
@@ -122,7 +197,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: (){
                     LoadLevel(context, _level-1,"");
                   },
-                  child: Text('PREVIOUS'),
+                  child: Text(previous),
                 ),
                 FlatButton(
                   color: Colors.green,
@@ -130,7 +205,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: (){
                     LoadLevel(context, _level+1,"");
                   },
-                  child: Text('NEXT'),
+                  child: Text(next),
                 ),
               ],
             ),
@@ -154,7 +229,7 @@ class _MainPageState extends State<MainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('MISTAKES : ${_mistakeLevel}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('${mistakes} : ${_mistakeLevel}',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ],
             ),
             Row(
@@ -201,7 +276,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             Wrap(
-                children: charactersTR.map((e) =>
+                children: characters.map((e) =>
                     Character(e, PressedKey,addToGuessedCharacters,_guessedCharacters),
                 ).toList()
             ),

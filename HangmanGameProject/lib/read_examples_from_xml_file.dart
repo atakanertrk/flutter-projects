@@ -18,7 +18,9 @@ class Example{
 }
 
 Future<Example> GetSpecifiedExample(BuildContext context, int level, String lang) async {
-  String xmlString = await DefaultAssetBundle.of(context).loadString("assets/xmlfiles/examples${lang}.xml");
+  print(lang);
+  String path = "assets/xmlfiles/examples" + lang + ".xml";
+  String xmlString = await DefaultAssetBundle.of(context).loadString(path);
   var raw = XmlDocument.parse(xmlString);
   var elements = raw.findAllElements("example${level}");
   var output = elements.map((element){

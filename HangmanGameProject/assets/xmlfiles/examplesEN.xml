@@ -1,0 +1,30 @@
+<data>
+ <example1>
+     <question>an animal with two legs and wings</question>
+     <answer>bird</answer>
+ </example1>
+  <example2>
+      <question>eye protection accessory</question>
+      <answer>sunglasses</answer>
+  </example2>
+    <example3>
+        <question>The substance that every living thing needs</question>
+        <answer>water</answer>
+    </example3>
+    <example4>
+        <question>The substance that gives the blood color</question>
+        <answer>erythrocyte</answer>
+    </example4>
+    <example5>
+        <question>Capital city of Turkey</question>
+        <answer>ankara</answer>
+    </example5>
+    <example6>
+        <question>Programming Language</question>
+        <answer>python</answer>
+    </example6>
+    <example7>
+        <question>Name of the seat on the bicycle</question>
+        <answer>saddle</answer>
+    </example7>
+</data>
